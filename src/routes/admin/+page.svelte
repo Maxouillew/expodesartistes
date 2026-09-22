@@ -8,16 +8,17 @@
   import ArtistsTab from "$lib/components/admin/ArtistsTab.svelte";
   import VotersTab from "$lib/components/admin/VotersTab.svelte";
   import DrawTab from "$lib/components/admin/DrawTab.svelte";
-  import UpdateChecker from "$lib/components/admin/UpdateChecker.svelte";
+  import VersionTab from "$lib/components/admin/VersionTab.svelte";
   import Button from "$lib/components/Button.svelte";
   import Icon, { type IconName } from "$lib/components/Icon.svelte";
 
-  type TabId = "classement" | "artistes" | "votants" | "tirage";
+  type TabId = "classement" | "artistes" | "votants" | "tirage" | "version";
   const TABS: { id: TabId; label: string; icon: IconName }[] = [
     { id: "classement", label: "Classement", icon: "trophy" },
     { id: "artistes", label: "Artistes", icon: "users" },
     { id: "votants", label: "Votants", icon: "list" },
     { id: "tirage", label: "Tirage au sort", icon: "shuffle" },
+    { id: "version", label: "Version", icon: "info" },
   ];
 
   let needsSetup = $state<boolean | null>(null);
@@ -90,7 +91,6 @@
   {:else}
     <header class="admin-header">
       <h1>Administration</h1>
-      <UpdateChecker />
     </header>
 
     <div role="tablist" aria-label="Sections admin" class="tablist">
@@ -124,9 +124,13 @@
       <div role="tabpanel" id="panel-votants" aria-labelledby="tab-votants" class="animate-in">
         <VotersTab />
       </div>
-    {:else}
+    {:else if activeTab === "tirage"}
       <div role="tabpanel" id="panel-tirage" aria-labelledby="tab-tirage" class="animate-in">
         <DrawTab />
+      </div>
+    {:else}
+      <div role="tabpanel" id="panel-version" aria-labelledby="tab-version" class="animate-in">
+        <VersionTab />
       </div>
     {/if}
   {/if}
