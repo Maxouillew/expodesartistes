@@ -34,7 +34,7 @@ npm run lint          # lint (à configurer si absent)
 L'app intègre un auto-updater (`tauri-plugin-updater` + `tauri-plugin-process`) : un bouton « Vérifier les mises à jour » dans l'admin (`src/lib/components/admin/UpdateChecker.svelte`) télécharge et installe la dernière version publiée sur GitHub Releases, puis relance l'app — sur Mac comme sur Windows.
 
 **Publier une nouvelle version** :
-1. Bumper `"version"` dans `src-tauri/tauri.conf.json` **et** `package.json` (même valeur).
+1. Bumper `"version"` dans `src-tauri/tauri.conf.json`, `package.json` **et** `version` dans `src-tauri/Cargo.toml` (même valeur partout — c'est la version dans `tauri.conf.json` qui est réellement comparée par l'updater, mais les trois doivent rester synchronisés).
 2. Committer, puis taguer : `git tag vX.Y.Z && git push origin vX.Y.Z`.
 3. Le workflow `.github/workflows/release.yml` construit automatiquement les installeurs macOS (universal) et Windows, les signe, et publie une GitHub Release avec le `latest.json` que l'updater consulte. Rien d'autre à faire.
 
