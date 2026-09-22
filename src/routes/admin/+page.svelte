@@ -8,6 +8,7 @@
   import ArtistsTab from "$lib/components/admin/ArtistsTab.svelte";
   import VotersTab from "$lib/components/admin/VotersTab.svelte";
   import DrawTab from "$lib/components/admin/DrawTab.svelte";
+  import UpdateChecker from "$lib/components/admin/UpdateChecker.svelte";
   import Button from "$lib/components/Button.svelte";
   import Icon, { type IconName } from "$lib/components/Icon.svelte";
 
@@ -89,6 +90,7 @@
   {:else}
     <header class="admin-header">
       <h1>Administration</h1>
+      <UpdateChecker />
     </header>
 
     <div role="tablist" aria-label="Sections admin" class="tablist">
@@ -203,6 +205,11 @@
   }
 
   .admin-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-3;
     margin-bottom: $space-5;
 
     h1 {

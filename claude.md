@@ -29,6 +29,17 @@ npm run check         # svelte-check + tsc
 npm run lint          # lint (à configurer si absent)
 ```
 
+## Mises à jour de l'application
+
+L'app intègre un auto-updater (`tauri-plugin-updater` + `tauri-plugin-process`) : un bouton « Vérifier les mises à jour » dans l'admin (`src/lib/components/admin/UpdateChecker.svelte`) télécharge et installe la dernière version publiée sur GitHub Releases, puis relance l'app — sur Mac comme sur Windows.
+
+**Publier une nouvelle version** :
+1. Bumper `"version"` dans `src-tauri/tauri.conf.json` **et** `package.json` (même valeur).
+2. Committer, puis taguer : `git tag vX.Y.Z && git push origin vX.Y.Z`.
+3. Le workflow `.github/workflows/release.yml` construit automatiquement les installeurs macOS (universal) et Windows, les signe, et publie une GitHub Release avec le `latest.json` que l'updater consulte. Rien d'autre à faire.
+
+**Clé de signature** : la paire de clés vit hors du repo (`~/.tauri/expodesartistes.key` + `.key.pub`, jamais commitées). La clé privée et son mot de passe sont enregistrés comme secrets GitHub Actions (`TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`). La clé publique est dans `src-tauri/tauri.conf.json` (`plugins.updater.pubkey`) — elle peut être commitée sans risque. **Si la clé privée est perdue, les mises à jour futures ne pourront plus être installées automatiquement par les utilisateurs existants** (il faudra republier une nouvelle clé et redistribuer l'app manuellement une fois).
+
 ## Fonctionnalités
 
 ### 1. Vote (côté votant)
