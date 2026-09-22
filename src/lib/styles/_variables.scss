@@ -1,0 +1,58 @@
+// Design tokens — single source of truth for spacing, colors and type.
+// Light theme only (see CLAUDE.md UI/Design section).
+
+// Colors — near-white "galerie" palette, séparation par ombre plutôt que
+// par contraste de fond (voir CLAUDE.md).
+$color-background: #faf8f5;
+$color-surface: #ffffff;
+$color-text: #241f1a;
+$color-text-muted: #675c4f;
+$color-border: #e7e0d3;
+
+$color-primary: #a8481b;
+$color-primary-hover: #863913;
+$color-primary-contrast: #ffffff;
+
+$color-danger: #9c2418;
+$color-danger-hover: #7e1d13;
+$color-danger-contrast: #ffffff;
+
+$color-success: #2e6b33;
+$color-focus-ring: #1b6fc2;
+$color-gold: #8c6d1b; // accent décoratif (podium, tirage) — pas utilisé seul pour transmettre une info
+
+// Elevation — le fond étant presque blanc, les cartes se distinguent par
+// une ombre douce (teintée, pas noire) plutôt que par un contraste de fond.
+$shadow-card: 0 2px 14px rgba(36, 31, 26, 0.07);
+$shadow-modal:
+  0 20px 48px rgba(36, 31, 26, 0.16),
+  0 4px 14px rgba(36, 31, 26, 0.08);
+
+// Spacing scale
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.5rem;
+$space-6: 2rem;
+$space-7: 3rem;
+$space-8: 4rem;
+
+// Typography
+$font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+$font-size-base: 1.0625rem; // 17px — un cran au-dessus du minimum accessible (16px)
+$font-size-lg: 1.375rem;
+$font-size-xl: 2rem;
+$font-size-sm: 0.9375rem;
+
+// Layout
+$radius: 0.75rem;
+$min-tap-target: 48px;
+$max-content-width: 68rem;
+
+// Motion — durations kept short and used only for entrance/feedback,
+// never for content the user must wait on. All disabled globally under
+// prefers-reduced-motion (see global.scss).
+$duration-fast: 0.15s;
+$duration-base: 0.25s;
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
