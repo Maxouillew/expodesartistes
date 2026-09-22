@@ -55,7 +55,7 @@
 <div class="top-bar">
   <div class="brand">
     <img src="/logo.png" alt="" class="brand-logo" />
-    <span class="brand-title">Exposition des artistes</span>
+    <span class="brand-title">Exposition des artistes.</span>
   </div>
   <a href="/" class="home-link">
     <Icon name="arrow-left" size={18} />
