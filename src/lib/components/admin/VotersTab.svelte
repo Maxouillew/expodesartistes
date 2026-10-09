@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { listVoters, type Voter } from "$lib/services/voters";
+  import { listVoters, deleteVoter, type Voter } from "$lib/services/voters";
   import Button from "$lib/components/Button.svelte";
+  import Modal from "$lib/components/Modal.svelte";
   import Icon from "$lib/components/Icon.svelte";
 
   let voters = $state<Voter[] | null>(null);
@@ -21,6 +22,33 @@
   }
 
   onMount(load);
+
+  let deleteModalOpen = $state(false);
+  let voterToDelete = $state<Voter | null>(null);
+  let deleteError = $state<string | undefined>(undefined);
+  let deleting = $state(false);
+
+  function requestDelete(voter: Voter) {
+    voterToDelete = voter;
+    deleteError = undefined;
+    deleteModalOpen = true;
+  }
+
+  async function confirmDelete() {
+    if (!voterToDelete) return;
+    deleting = true;
+    deleteError = undefined;
+    try {
+      await deleteVoter(voterToDelete.id);
+      deleteModalOpen = false;
+      voterToDelete = null;
+      await load();
+    } catch (err) {
+      deleteError = String(err);
+    } finally {
+      deleting = false;
+    }
+  }
 
   const dateFormatter = new Intl.DateTimeFormat("fr-BE", {
     dateStyle: "short",
@@ -64,6 +92,7 @@
             <th scope="col">Nom</th>
             <th scope="col">Téléphone</th>
             <th scope="col">Date</th>
+            <th scope="col"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
         <tbody>
@@ -73,6 +102,11 @@
               <td>{voter.lastName}</td>
               <td>{voter.phone}</td>
               <td class="date">{formatDate(voter.createdAt)}</td>
+              <td class="actions">
+                <Button variant="danger" icon="trash" onclick={() => requestDelete(voter)}>
+                  Supprimer
+                </Button>
+              </td>
             </tr>
           {/each}
         </tbody>
@@ -80,6 +114,27 @@
     </div>
   {/if}
 </section>
+
+<Modal bind:open={deleteModalOpen} title="Supprimer le vote">
+  {#snippet children()}
+    {#if voterToDelete}
+      <p>
+        Supprimer le vote de <strong>{voterToDelete.firstName} {voterToDelete.lastName}</strong>
+        ({voterToDelete.phone}) ?
+      </p>
+      <p class="hint">
+        Ses points disparaissent du classement et cette personne pourra voter à nouveau.
+      </p>
+    {/if}
+    {#if deleteError}
+      <p class="error" role="alert"><Icon name="alert-circle" size={18} />{deleteError}</p>
+    {/if}
+  {/snippet}
+  {#snippet footer()}
+    <Button variant="secondary" onclick={() => (deleteModalOpen = false)}>Annuler</Button>
+    <Button variant="danger" icon="trash" onclick={confirmDelete} disabled={deleting}>Supprimer</Button>
+  {/snippet}
+</Modal>
 
 <style lang="scss">
   @use "../../styles/variables" as *;
@@ -140,6 +195,23 @@
 
   .date {
     color: $color-text-muted;
+  }
+
+  .actions {
+    text-align: right;
+  }
+
+  .hint {
+    color: $color-text-muted;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .error {

@@ -10,3 +10,7 @@ export interface DrawnVoter {
 export function drawVoter(): Promise<DrawnVoter> {
   return invoke("draw_voter");
 }
+
+export function resetDraw(): Promise<void> {
+  return invoke("reset_draw");
+}

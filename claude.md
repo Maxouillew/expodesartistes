@@ -86,6 +86,8 @@ Le score d'un artiste = somme des points reçus. Départage en cas d'égalité :
   - **Suppression** : avec une confirmation (« Supprimer l'artiste #N Nom ? »). **Refusée si l'artiste a déjà reçu au moins un vote**, avec un message explicite indiquant le nombre de votes concernés. Suppression possible uniquement pour un artiste sans vote.
   - Le nombre de votes par artiste est affiché dans la liste pour anticiper ce blocage.
 - **Onglet Tirage au sort** : bouton qui sélectionne **un votant au hasard** parmi tous les votants et affiche prénom, nom et téléphone (pour l'appeler et lui remettre un prix). Le tirage n'a lieu qu'une fois en pratique ; un bouton « Tirer à nouveau » (qui exclut les votants déjà tirés durant la session) reste disponible au cas où le gagnant est absent.
+- **Onglet Votants** : liste des votants ; chaque vote peut être supprimé (confirmation) — la personne pourra alors revoter (téléphone et nom libérés).
+- **Onglet Configuration** : plein écran (conservé entre les lancements, via `localStorage`), changement du mot de passe admin (impossible si fixé au build), réinitialisation de la liste des gagnants du tirage, suppression de tous les votes (re-saisie du mot de passe), bouton « Quitter l'application ».
 - Bouton de déconnexion admin.
 
 **Mot de passe admin**
