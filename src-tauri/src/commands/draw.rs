@@ -79,6 +79,17 @@ pub fn draw_voter(db: State<Db>, draw_state: State<DrawState>) -> Result<DrawnVo
     Ok(voter)
 }
 
+/// Forgets every winner drawn so far, so they can be drawn again.
+#[tauri::command]
+pub fn reset_draw(draw_state: State<DrawState>) -> Result<(), String> {
+    draw_state
+        .0
+        .lock()
+        .map_err(|_| "État du tirage indisponible.".to_string())?
+        .clear();
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -9,15 +9,17 @@
   import VotersTab from "$lib/components/admin/VotersTab.svelte";
   import DrawTab from "$lib/components/admin/DrawTab.svelte";
   import VersionTab from "$lib/components/admin/VersionTab.svelte";
+  import ConfigTab from "$lib/components/admin/ConfigTab.svelte";
   import Button from "$lib/components/Button.svelte";
   import Icon, { type IconName } from "$lib/components/Icon.svelte";
 
-  type TabId = "classement" | "artistes" | "votants" | "tirage" | "version";
+  type TabId = "classement" | "artistes" | "votants" | "tirage" | "config" | "version";
   const TABS: { id: TabId; label: string; icon: IconName }[] = [
     { id: "classement", label: "Classement", icon: "trophy" },
     { id: "artistes", label: "Artistes", icon: "users" },
     { id: "votants", label: "Votants", icon: "list" },
     { id: "tirage", label: "Tirage au sort", icon: "shuffle" },
+    { id: "config", label: "Configuration", icon: "settings" },
     { id: "version", label: "Version", icon: "info" },
   ];
 
@@ -127,6 +129,10 @@
     {:else if activeTab === "tirage"}
       <div role="tabpanel" id="panel-tirage" aria-labelledby="tab-tirage" class="animate-in">
         <DrawTab />
+      </div>
+    {:else if activeTab === "config"}
+      <div role="tabpanel" id="panel-config" aria-labelledby="tab-config" class="animate-in">
+        <ConfigTab />
       </div>
     {:else}
       <div role="tabpanel" id="panel-version" aria-labelledby="tab-version" class="animate-in">

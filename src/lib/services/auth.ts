@@ -11,3 +11,11 @@ export function adminSetPassword(password: string): Promise<void> {
 export function adminLogin(password: string): Promise<void> {
   return invoke("admin_login", { password });
 }
+
+export function adminPasswordIsFixed(): Promise<boolean> {
+  return invoke("admin_password_is_fixed");
+}
+
+export function adminChangePassword(currentPassword: string, newPassword: string): Promise<void> {
+  return invoke("admin_change_password", { currentPassword, newPassword });
+}

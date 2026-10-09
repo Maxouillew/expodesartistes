@@ -84,18 +84,51 @@ pub fn admin_set_password(app: AppHandle, password: String) -> Result<(), String
     write_stored_hash(&app, &hash)
 }
 
-#[tauri::command]
-pub fn admin_login(app: AppHandle, password: String) -> Result<(), String> {
+/// Checks `password` against the active admin hash. Shared by login and by
+/// every sensitive action that asks the admin to re-enter their password.
+pub fn verify_admin_password(app: &AppHandle, password: &str) -> Result<(), String> {
     let hash = build_time_hash()
         .map(|s| s.to_string())
-        .or_else(|| read_stored_hash(&app))
+        .or_else(|| read_stored_hash(app))
         .ok_or_else(|| "Aucun mot de passe admin configuré.".to_string())?;
 
-    if verify_password(&password, &hash) {
+    if verify_password(password, &hash) {
         Ok(())
     } else {
         Err("Mot de passe incorrect.".to_string())
     }
+}
+
+#[tauri::command]
+pub fn admin_login(app: AppHandle, password: String) -> Result<(), String> {
+    verify_admin_password(&app, &password)
+}
+
+/// True when the password is baked into the binary and therefore cannot be
+/// changed from the app.
+#[tauri::command]
+pub fn admin_password_is_fixed() -> bool {
+    build_time_hash().is_some()
+}
+
+#[tauri::command]
+pub fn admin_change_password(
+    app: AppHandle,
+    current_password: String,
+    new_password: String,
+) -> Result<(), String> {
+    if build_time_hash().is_some() {
+        return Err("Le mot de passe admin est défini au build et ne peut pas être modifié ici.".to_string());
+    }
+    verify_admin_password(&app, &current_password)?;
+    if new_password.len() < MIN_PASSWORD_LEN {
+        return Err(format!(
+            "Le mot de passe doit contenir au moins {} caractères.",
+            MIN_PASSWORD_LEN
+        ));
+    }
+    let hash = hash_password(&new_password)?;
+    write_stored_hash(&app, &hash)
 }
 
 #[cfg(test)]
